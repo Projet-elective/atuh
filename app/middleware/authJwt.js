@@ -19,59 +19,122 @@ verifyToken = (req, res, next) => {
     next()
   })
 }
-isAdmin = (req, res, next) => {
+isClient = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'admin') {
+        if (roles[i].name === 'client') {
           next()
           return
         }
       }
       res.status(403).send({
-        message: 'Require Admin Role!'
+        message: 'Require client Role!'
       })
     })
   })
 }
-isModerator = (req, res, next) => {
+isRestaurant = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'moderator') {
+        if (roles[i].name === 'restaurant') {
           next()
           return
         }
       }
       res.status(403).send({
-        message: 'Require Moderator Role!'
+        message: 'Require restaurant Role!'
       })
     })
   })
 }
-isModeratorOrAdmin = (req, res, next) => {
+isDelivery = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'moderator') {
-          next()
-          return
-        }
-        if (roles[i].name === 'admin') {
+        if (roles[i].name === 'delivery') {
           next()
           return
         }
       }
       res.status(403).send({
-        message: 'Require Moderator or Admin Role!'
+        message: 'Require delivery Role!'
       })
     })
   })
 }
+isDev = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'dev') {
+          next()
+          return
+        }
+      }
+      res.status(403).send({
+        message: 'Require dev Role!'
+      })
+    })
+  })
+}
+isCommercial = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'commercial') {
+          next()
+          return
+        }
+      }
+      res.status(403).send({
+        message: 'Require commercial Role!'
+      })
+    })
+  })
+}
+isTech = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'tech') {
+          next()
+          return
+        }
+      }
+      res.status(403).send({
+        message: 'Require tech Role!'
+      })
+    })
+  })
+}
+// isModeratorOrAdmin = (req, res, next) => {
+//   User.findByPk(req.userId).then(user => {
+//     user.getRoles().then(roles => {
+//       for (let i = 0; i < roles.length; i++) {
+//         if (roles[i].name === 'moderator') {
+//           next()
+//           return
+//         }
+//         if (roles[i].name === 'admin') {
+//           next()
+//           return
+//         }
+//       }
+//       res.status(403).send({
+//         message: 'Require Moderator or Admin Role!'
+//       })
+//     })
+//   })
+// }
 const authJwt = {
   verifyToken,
-  isAdmin,
-  isModerator,
-  isModeratorOrAdmin
+  isClient,
+  isRestaurant,
+  isDelivery,
+  isDev,
+  isTech,
+  isCommercial
 }
 module.exports = authJwt

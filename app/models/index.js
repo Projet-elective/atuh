@@ -32,5 +32,5 @@ db.user.belongsToMany(db.role, {
   foreignKey: 'userId',
   otherKey: 'roleId'
 })
-db.ROLES = ['user', 'admin', 'moderator']
+db.ROLES = ['client', 'restaurant', 'delivery', 'dev', 'commercial', 'tech']
 module.exports = db

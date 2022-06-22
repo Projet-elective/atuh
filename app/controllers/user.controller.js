@@ -1,12 +1,21 @@
 exports.allAccess = (req, res) => {
   res.status(200).send('Public Content.')
 }
-exports.userBoard = (req, res) => {
-  res.status(200).send('User Content.')
+exports.clientBoard = (req, res) => {
+  res.status(200).send('Client Content.')
 }
-exports.adminBoard = (req, res) => {
-  res.status(200).send('Admin Content.')
+exports.restaurantBoard = (req, res) => {
+  res.status(200).send('Restaurant Content.')
 }
-exports.moderatorBoard = (req, res) => {
-  res.status(200).send('Moderator Content.')
+exports.deliveryBoard = (req, res) => {
+  res.status(200).send('Delivery Content.')
+}
+exports.devBoard = (req, res) => {
+  res.status(200).send('Dev Content.')
+}
+exports.commercialBoard = (req, res) => {
+  res.status(200).send('Commercial Content.')
+}
+exports.techBoard = (req, res) => {
+  res.status(200).send('Tech Content.')
 }

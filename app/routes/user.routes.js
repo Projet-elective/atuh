@@ -10,18 +10,33 @@ module.exports = function (app) {
   })
   app.get('/api/test/all', controller.allAccess)
   app.get(
-    '/api/test/user',
+    '/api/test/client',
     [authJwt.verifyToken],
-    controller.userBoard
+    controller.clientBoard
   )
   app.get(
-    '/api/test/mod',
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
+    '/api/test/restaurant',
+    [authJwt.verifyToken],
+    controller.restaurantBoard
   )
   app.get(
-    '/api/test/admin',
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
+    '/api/test/delivery',
+    [authJwt.verifyToken],
+    controller.deliveryBoard
+  )
+  app.get(
+    '/api/test/dev',
+    [authJwt.verifyToken],
+    controller.devBoard
+  )
+  app.get(
+    '/api/test/commercial',
+    [authJwt.verifyToken],
+    controller.commercialBoard
+  )
+  app.get(
+    '/api/test/tech',
+    [authJwt.verifyToken],
+    controller.techBoard
   )
 }
