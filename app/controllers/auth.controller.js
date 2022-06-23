@@ -58,26 +58,26 @@ exports.signin = (req, res) => {
           message: 'Invalid Password!'
         })
       }
-      const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.roles }, sercret, {
-        expiresIn: 86400 // 24 hours
-      })
-      const verifyJWT = (token) => {
-        let valid = false
 
-        try {
-          valid = jwt.verify(token, sercret)
-        } catch {
-          valid = false
-        }
-        return valid
-      }
-      console.log(verifyJWT(token))
-      const verify = verifyJWT(token)
       const authorities = []
       user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push('ROLE_' + roles[i].name.toUpperCase())
         }
+        const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: authorities }, sercret, {
+          expiresIn: 86400 // 24 hours
+        })
+        const verifyJWT = (token) => {
+          let valid = false
+
+          try {
+            valid = jwt.verify(token, sercret)
+          } catch {
+            valid = false
+          }
+          return valid
+        }
+        const verify = verifyJWT(token)
         res.status(200).send({
           id: user.id,
           username: user.username,
