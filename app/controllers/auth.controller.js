@@ -67,24 +67,24 @@ exports.signin = (req, res) => {
         const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: authorities }, sercret, {
           expiresIn: 86400 // 24 hours
         })
-        const verifyJWT = (token) => {
-          let valid = false
+        // const verifyJWT = (token) => {
+        //   let valid = false
 
-          try {
-            valid = jwt.verify(token, sercret)
-          } catch {
-            valid = false
-          }
-          return valid
-        }
-        const verify = verifyJWT(token)
+        //   try {
+        //     valid = jwt.verify(token, sercret)
+        //   } catch {
+        //     valid = false
+        //   }
+        //   return valid
+        // }
+        // const verify = verifyJWT(token)
         res.status(200).send({
           id: user.id,
           username: user.username,
           email: user.email,
           roles: authorities,
-          accessToken: token,
-          validd: verify
+          accessToken: token
+          // validd: verify
         })
       })
     })
