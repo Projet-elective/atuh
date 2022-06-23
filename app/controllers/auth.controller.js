@@ -5,6 +5,8 @@ const Role = db.role
 const Op = db.Sequelize.Op
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const { verifyToken } = require('../middleware/authJwt')
+const sercret = 'sasori-secret-key'
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
@@ -56,9 +58,21 @@ exports.signin = (req, res) => {
           message: 'Invalid Password!'
         })
       }
-      const token = jwt.sign({ id: user.id }, config.secret, {
+      const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.roles }, sercret, {
         expiresIn: 86400 // 24 hours
       })
+      const verifyJWT = (token) => {
+        let valid = false
+
+        try {
+          valid = jwt.verify(token, sercret)
+        } catch {
+          valid = false
+        }
+        return valid
+      }
+      console.log(verifyJWT(token))
+      const verify = verifyJWT(token)
       const authorities = []
       user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
@@ -69,7 +83,8 @@ exports.signin = (req, res) => {
           username: user.username,
           email: user.email,
           roles: authorities,
-          accessToken: token
+          accessToken: token,
+          validd: verify
         })
       })
     })
