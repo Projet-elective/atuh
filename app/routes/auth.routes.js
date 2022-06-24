@@ -17,4 +17,6 @@ module.exports = function (app) {
     controller.signup
   )
   app.post('/api/auth/signin', controller.signin)
+  app.delete('/api/auth/delete', controller.delete)
+  app.patch('/api/auth/patchUser', controller.patchUser)
 }

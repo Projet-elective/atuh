@@ -6,6 +6,7 @@ const Op = db.Sequelize.Op
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { verifyToken } = require('../middleware/authJwt')
+const { user } = require('../models')
 const sercret = 'sasori-secret-key'
 exports.signup = (req, res) => {
   // Save User to Database
@@ -87,6 +88,70 @@ exports.signin = (req, res) => {
           // validd: verify
         })
       })
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
+exports.delete = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' })
+      }
+      const passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      )
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: 'Invalid Password !'
+        })
+      }
+      User.destroy({
+        where: {
+          username: user.username
+        }
+      }).then(
+        () => res.status(200).send()
+      )
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
+exports.patchUser = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' })
+      }
+      // const passwordIsValid = bcrypt.compareSync(
+      //   req.body.password,
+      //   user.password
+      // )
+      // if (!passwordIsValid) {
+      //   return res.status(401).send({
+      //     accessToken: null,
+      //     message: 'Invalid Password !'
+      //   })
+      // }
+      User.update({ username: req.body.newusername }, {
+        where: {
+          username: user.username
+        }
+      }).then(
+        () => res.status(200).send()
+      )
     })
     .catch(err => {
       res.status(500).send({ message: err.message })
