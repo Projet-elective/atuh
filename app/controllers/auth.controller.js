@@ -131,7 +131,7 @@ exports.patchUser = (req, res) => {
       username: req.body.username
     }
   })
-    .then(user => {
+    .then(async user => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
@@ -145,13 +145,12 @@ exports.patchUser = (req, res) => {
       //     message: 'Invalid Password !'
       //   })
       // }
-      User.update({ username: req.body.newusername }, {
+      await User.update({ username: req.body.newusername }, {
         where: {
           username: user.username
         }
-      }).then(
-        () => res.status(200).send()
-      )
+      })
+      res.status(200).send()
     })
     .catch(err => {
       res.status(500).send({ message: err.message })
@@ -163,7 +162,7 @@ exports.patchEmail = (req, res) => {
       username: req.body.username
     }
   })
-    .then(user => {
+    .then(async user => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
@@ -177,13 +176,12 @@ exports.patchEmail = (req, res) => {
       //     message: 'Invalid Password !'
       //   })
       // }
-      User.update({ email: req.body.newemail }, {
+      await User.update({ email: req.body.neweamil }, {
         where: {
           email: user.email
         }
-      }).then(
-        () => res.status(200).send()
-      )
+      })
+      res.status(200).send()
     })
     .catch(err => {
       res.status(500).send({ message: err.message })
@@ -195,7 +193,7 @@ exports.patchPassword = (req, res) => {
       username: req.body.username
     }
   })
-    .then(user => {
+    .then(async user => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
@@ -209,13 +207,12 @@ exports.patchPassword = (req, res) => {
       //     message: 'Invalid Password !'
       //   })
       // }
-      User.update({ password: bcrypt.hashSync(req.body.password, 8) }, {
+      await User.update({ password: bcrypt.hashSync(req.body.password, 8) }, {
         where: {
           password: user.password
         }
-      }).then(
-        () => res.status(200).send()
-      )
+      })
+      res.status(200).send()
     })
     .catch(err => {
       res.status(500).send({ message: err.message })
