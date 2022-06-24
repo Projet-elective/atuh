@@ -189,3 +189,35 @@ exports.patchEmail = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+exports.patchPassword = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' })
+      }
+      // const passwordIsValid = bcrypt.compareSync(
+      //   req.body.password,
+      //   user.password
+      // )
+      // if (!passwordIsValid) {
+      //   return res.status(401).send({
+      //     accessToken: null,
+      //     message: 'Invalid Password !'
+      //   })
+      // }
+      User.update({ password: bcrypt.hashSync(req.body.password, 8) }, {
+        where: {
+          password: user.password
+        }
+      }).then(
+        () => res.status(200).send()
+      )
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
