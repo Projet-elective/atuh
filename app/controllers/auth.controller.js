@@ -45,7 +45,7 @@ exports.signin = (req, res) => {
       username: req.body.username
     }
   })
-    .then(user => {
+    .then(async user => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
@@ -59,13 +59,19 @@ exports.signin = (req, res) => {
           message: 'Invalid Password !'
         })
       }
+      const now = new Date()
+      await User.update({ lastConnection: now }, {
+        where: {
+          username: user.username
+        }
+      })
 
       const authorities = []
-      user.getRoles().then(roles => {
+      await user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push('ROLE_' + roles[i].name.toUpperCase())
         }
-        const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: authorities }, sercret, {
+        const token = jwt.sign({ id: user.id, username: user.username, email: user.email, lastConnection: user.lastConnection, role: authorities }, sercret, {
           expiresIn: 86400 // 24 hours
         })
         // const verifyJWT = (token) => {
@@ -83,6 +89,7 @@ exports.signin = (req, res) => {
           id: user.id,
           username: user.username,
           email: user.email,
+          lastConnection: user.lastConnection,
           roles: authorities,
           accessToken: token
           // validd: verify
