@@ -185,7 +185,7 @@ exports.patchEmail = (req, res) => {
       // }
       await User.update({ email: req.body.newemail }, {
         where: {
-          email: user.email
+          username: user.username
         }
       })
       res.status(200).send()
@@ -216,7 +216,7 @@ exports.patchPassword = (req, res) => {
       // }
       await User.update({ password: bcrypt.hashSync(req.body.password, 8) }, {
         where: {
-          password: user.password
+          username: user.username
         }
       })
       res.status(200).send()
