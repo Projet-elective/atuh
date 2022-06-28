@@ -214,7 +214,7 @@ exports.patchPassword = (req, res) => {
       //     message: 'Invalid Password !'
       //   })
       // }
-      await User.update({ password: bcrypt.hashSync(req.body.password, 8) }, {
+      await User.update({ password: bcrypt.hashSync(req.body.newpassword, 8) }, {
         where: {
           username: user.username
         }
