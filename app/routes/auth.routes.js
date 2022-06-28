@@ -21,4 +21,5 @@ module.exports = function (app) {
   app.patch('/api/auth/patchUser', controller.patchUser)
   app.patch('/api/auth/patchEmail', controller.patchEmail)
   app.patch('/api/auth/patchPassword', controller.patchPassword)
+  app.patch('/api/auth/patchIsBan', controller.patchIsBan)
 }

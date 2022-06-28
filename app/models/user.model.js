@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     lastConnection: {
       type: Sequelize.DATE || null
+    },
+    isBan: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
   })
   return User
