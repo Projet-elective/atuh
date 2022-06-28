@@ -183,7 +183,7 @@ exports.patchEmail = (req, res) => {
       //     message: 'Invalid Password !'
       //   })
       // }
-      await User.update({ email: req.body.neweamil }, {
+      await User.update({ email: req.body.newemail }, {
         where: {
           email: user.email
         }
