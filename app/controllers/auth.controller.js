@@ -69,7 +69,7 @@ exports.signin = (req, res) => {
       const authorities = []
       await user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
-          authorities.push('ROLE_' + roles[i].name.toUpperCase())
+          authorities.push(roles[i].name.toUpperCase())
         }
         const token = jwt.sign({ id: user.id, username: user.username, email: user.email, lastConnection: user.lastConnection, role: authorities }, sercret, {
           expiresIn: 86400 // 24 hours
