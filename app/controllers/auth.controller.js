@@ -256,3 +256,23 @@ exports.patchIsBan = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+exports.getAllLastConnected = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: 'req.body.username'
+    }
+  })
+    .then(async user => {
+      if (!user) {
+        const username = await User.findAll({ attributes: ['username', 'lastConnection'] })
+        const time = Date.now()
+        const today = new Date(time)
+        const formatedToday = today.toDateString()
+
+        res.attachment('Log_Connection' + formatedToday + '.txt').send(username)
+      }
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
