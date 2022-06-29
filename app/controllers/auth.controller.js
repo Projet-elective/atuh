@@ -2,6 +2,7 @@ const db = require('../models')
 const config = require('../config/auth.config')
 const User = db.user
 const Role = db.role
+const UserRole = db.user_roles
 const Op = db.Sequelize.Op
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -303,6 +304,33 @@ exports.getAllLastConnected = (req, res) => {
         res.attachment('Log_Connection' + formatedToday + '.txt').send(username)
       }
     })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
+exports.getid = (req, res) => {
+  User.findOne({
+    where: {
+      id: req.body.id
+    }
+  })
+    .then(async user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' })
+      }
+      const authorities = []
+      await user.getRoles().then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          authorities.push(roles[i].name.toUpperCase())
+        }
+
+        res.status(200).send({
+          roles: authorities[0]
+        // validd: verify
+        })
+      })
+    })
+
     .catch(err => {
       res.status(500).send({ message: err.message })
     })
