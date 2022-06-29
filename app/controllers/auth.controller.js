@@ -225,7 +225,7 @@ exports.patchPassword = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
-exports.patchIsBan = (req, res) => {
+exports.patchForBan = (req, res) => {
   const row = User.findOne({
     where: {
       username: req.body.username
@@ -246,6 +246,37 @@ exports.patchIsBan = (req, res) => {
       //   })
       // }
       await User.update({ isBan: true }, {
+        where: {
+          username: user.username
+        }
+      })
+      res.status(200).send()
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
+exports.patchForDeBan = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(async user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' })
+      }
+      // const passwordIsValid = bcrypt.compareSync(
+      //   req.body.password,
+      //   user.password
+      // )
+      // if (!passwordIsValid) {
+      //   return res.status(401).send({
+      //     accessToken: null,
+      //     message: 'Invalid Password !'
+      //   })
+      // }
+      await User.update({ isBan: false }, {
         where: {
           username: user.username
         }
