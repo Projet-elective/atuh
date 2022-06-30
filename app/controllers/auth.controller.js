@@ -9,8 +9,17 @@ const bcrypt = require('bcryptjs')
 const { verifyToken } = require('../middleware/authJwt')
 const { user } = require('../models')
 const sercret = 'sasori-secret-key'
+
+/**
+ * @api {post} /auth/signup
+ * @apiName post
+ * @apiGroup Auth
+ * @apiParam {Object} username, email, password for creat user
+ * @apiSuccess {Object} User was registered successfully!
+ * @apiError err Return the error
+ */
+// Save User to Database
 exports.signup = (req, res) => {
-  // Save User to Database
   User.create({
     username: req.body.username,
     email: req.body.email,
@@ -40,6 +49,15 @@ exports.signup = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {post} /auth/signin
+ * @apiName signin
+ * @apiGroup Auth
+ * @apiParam {Object} username, password to connect
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Sign in with username
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -101,6 +119,15 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {delete} /auth/delete
+ * @apiName delete
+ * @apiGroup Auth
+ * @apiParam {Object} delete user
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Delete the user with his username
 exports.delete = (req, res) => {
   const row = User.findOne({
     where: {
@@ -133,6 +160,15 @@ exports.delete = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {patch} /auth/patchUser
+ * @apiName patchUser
+ * @apiGroup Auth
+ * @apiParam {Object} change username with oldusername and newusername
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Patch the username of one user with his newusername
 exports.patchUser = (req, res) => {
   const row = User.findOne({
     where: {
@@ -143,16 +179,6 @@ exports.patchUser = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
-      // const passwordIsValid = bcrypt.compareSync(
-      //   req.body.password,
-      //   user.password
-      // )
-      // if (!passwordIsValid) {
-      //   return res.status(401).send({
-      //     accessToken: null,
-      //     message: 'Invalid Password !'
-      //   })
-      // }
       await User.update({ username: req.body.newusername }, {
         where: {
           username: user.username
@@ -164,6 +190,15 @@ exports.patchUser = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {patch} /auth/patchEmail
+ * @apiName patchEmail
+ * @apiGroup Auth
+ * @apiParam {Object} change email with username and newemail
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Patch the email of one user with his username and new email
 exports.patchEmail = (req, res) => {
   const row = User.findOne({
     where: {
@@ -174,16 +209,6 @@ exports.patchEmail = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
-      // const passwordIsValid = bcrypt.compareSync(
-      //   req.body.password,
-      //   user.password
-      // )
-      // if (!passwordIsValid) {
-      //   return res.status(401).send({
-      //     accessToken: null,
-      //     message: 'Invalid Password !'
-      //   })
-      // }
       await User.update({ email: req.body.newemail }, {
         where: {
           username: user.username
@@ -195,6 +220,15 @@ exports.patchEmail = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {patch} /auth/patchPassword
+ * @apiName patchPassword
+ * @apiGroup Auth
+ * @apiParam {Object} change password with username and newpassword
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Patch the password of one user with his username and new password
 exports.patchPassword = (req, res) => {
   User.findOne({
     where: {
@@ -205,16 +239,6 @@ exports.patchPassword = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
-      // const passwordIsValid = bcrypt.compareSync(
-      //   req.body.password,
-      //   user.password
-      // )
-      // if (!passwordIsValid) {
-      //   return res.status(401).send({
-      //     accessToken: null,
-      //     message: 'Invalid Password !'
-      //   })
-      // }
       await User.update({ password: bcrypt.hashSync(req.body.newpassword, 8) }, {
         where: {
           username: user.username
@@ -226,6 +250,15 @@ exports.patchPassword = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {patch} /auth/patchForBan
+ * @apiName patchForBan
+ * @apiGroup Auth
+ * @apiParam {Object} change ban state to true with username
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Patch the state ban of the user to true with his username
 exports.patchForBan = (req, res) => {
   const row = User.findOne({
     where: {
@@ -236,16 +269,6 @@ exports.patchForBan = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
-      // const passwordIsValid = bcrypt.compareSync(
-      //   req.body.password,
-      //   user.password
-      // )
-      // if (!passwordIsValid) {
-      //   return res.status(401).send({
-      //     accessToken: null,
-      //     message: 'Invalid Password !'
-      //   })
-      // }
       await User.update({ isBan: true }, {
         where: {
           username: user.username
@@ -257,6 +280,15 @@ exports.patchForBan = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {patch} /auth/patchForDeBan
+ * @apiName patchForDeBan
+ * @apiGroup Auth
+ * @apiParam {Object} change ban state to false with username
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Patch the state ban of the user to false with his username
 exports.patchForDeBan = (req, res) => {
   const row = User.findOne({
     where: {
@@ -267,16 +299,6 @@ exports.patchForDeBan = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
-      // const passwordIsValid = bcrypt.compareSync(
-      //   req.body.password,
-      //   user.password
-      // )
-      // if (!passwordIsValid) {
-      //   return res.status(401).send({
-      //     accessToken: null,
-      //     message: 'Invalid Password !'
-      //   })
-      // }
       await User.update({ isBan: false }, {
         where: {
           username: user.username
@@ -288,6 +310,15 @@ exports.patchForDeBan = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {get} /auth/getAllLastConnected
+ * @apiName getAllLastConnected
+ * @apiGroup Auth
+ * @apiParam
+ * @apiSuccess {.txt} Download the file
+ * @apiError err Return the error
+ */
+// Get the list of last connected users
 exports.getAllLastConnected = (req, res) => {
   const row = User.findOne({
     where: {
@@ -308,6 +339,40 @@ exports.getAllLastConnected = (req, res) => {
       res.status(500).send({ message: err.message })
     })
 }
+/**
+ * @api {get} /auth/getAll
+ * @apiName getAll
+ * @apiGroup Auth
+ * @apiParam
+ * @apiSuccess {object} return all username
+ * @apiError err Return the error
+ */
+// Get all username of the user
+exports.getAll = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: 'req.body.username'
+    }
+  })
+    .then(async user => {
+      if (!user) {
+        const username = await User.findAll({ attributes: ['username'] })
+        res.send(username)
+      }
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
+/**
+ * @api {get} /auth/getid
+ * @apiName getid
+ * @apiGroup auth
+ * @apiParam {Object} id of the user
+ * @apiSuccess {Object}
+ * @apiError err Return the error
+ */
+// Get all id of the users
 exports.getid = (req, res) => {
   User.findOne({
     where: {
@@ -326,7 +391,6 @@ exports.getid = (req, res) => {
 
         res.status(200).send({
           roles: authorities[0]
-        // validd: verify
         })
       })
     })
