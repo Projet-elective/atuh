@@ -12,6 +12,9 @@ module.exports = (sequelize, Sequelize) => {
     lastConnection: {
       type: Sequelize.DATE || null
     },
+    address: {
+      type: Sequelize.STRING || null
+    },
     isBan: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
