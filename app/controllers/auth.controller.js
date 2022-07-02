@@ -186,7 +186,7 @@ exports.patchUser = (req, res) => {
           username: user.username
         }
       })
-      res.status(200).send()
+      res.status(200).send('Nom d\'utilisateur modifié')
     })
     .catch(err => {
       res.status(500).send({ message: err.message })
@@ -216,7 +216,28 @@ exports.patchEmail = (req, res) => {
           username: user.username
         }
       })
-      res.status(200).send()
+      res.status(200).send('Adresse mail modifiée')
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message })
+    })
+}
+exports.patchAddress = (req, res) => {
+  const row = User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(async user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' })
+      }
+      await User.update({ email: req.body.newaddress }, {
+        where: {
+          username: user.username
+        }
+      })
+      res.status(200).send('Adresse modifiée')
     })
     .catch(err => {
       res.status(500).send({ message: err.message })
