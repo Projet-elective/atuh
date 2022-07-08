@@ -232,7 +232,7 @@ exports.patchAddress = (req, res) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' })
       }
-      await User.update({ email: req.body.newaddress }, {
+      await User.update({ address: req.body.newaddress }, {
         where: {
           username: user.username
         }
