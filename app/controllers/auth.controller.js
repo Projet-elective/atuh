@@ -63,7 +63,7 @@ exports.signin = (req, res) => {
   User.findOne({
     where: {
       username: req.body.username,
-      isBan: false
+      isBan: false || null
     }
   })
     .then(async user => {
